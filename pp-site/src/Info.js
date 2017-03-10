@@ -13,7 +13,7 @@ class Info extends Component {
 		return (
 			<Modal show={this.props.show} onHide={this.close}>
 				<Modal.Header closeButton>
-					<Modal.Title>poeking - {this.props.title}</Modal.Title>
+					<Modal.Title>{this.props.title}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<p>{this.props.message}</p>
