@@ -15,6 +15,7 @@ import (
 	"github.com/gorilla/websocket"
 	"regexp"
 	"strconv"
+	"flag"
 )
 
 var db *sql.DB
@@ -220,8 +221,11 @@ func checkToken(token string) (bool, tokenInfo) {
 
 }
 func main() {
+	fmt.Printf("Starting server...")
+	connection := flag.String("db", "", "The database source, check Go sql.Open for more information. Example: user:pw@/table")
+	flag.Parse()
 	var err error
-	db, err = sql.Open("mysql", "root:*******@/table?parseTime=true")
+	db, err = sql.Open("mysql", *connection + "?parseTime=true")
 	if err != nil {
 		panic(err)
 	}

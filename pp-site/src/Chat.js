@@ -37,7 +37,7 @@ class Chat extends Component {
 	}
 	componentDidMount() {
 		var t = window.localStorage.getItem('token');
-		this.ws = new WebSocket("ws://localhost:3001/api/ws?token="+t);
+		this.ws = new WebSocket("ws://localhost:8080/api/ws?token="+t);
 		this.ws.addEventListener('open', (e) => {
 		});
 		this.ws.addEventListener('message', (e) => {

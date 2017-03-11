@@ -1,3 +1,5 @@
 node_modules/
 .idea/
 gin-bin
+main
+Makefile

@@ -115,7 +115,7 @@ class SignIn extends Component {
 			return;
 
 		}
-		fetch('/api/v1/register', {
+		fetch('/api/register', {
 			method: 'POST',
 			body: JSON.stringify({
 				username: this.state.username,
