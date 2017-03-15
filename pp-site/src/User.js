@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { ListGroupItem } from 'react-bootstrap';
 
 class User extends Component {
 	render() {
 		return (
-			<ListGroupItem id="user" header={this.props.name} />
+			<li id="user">{this.props.name}</li>
 		);
 	}
 }

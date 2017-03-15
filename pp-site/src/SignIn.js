@@ -85,15 +85,15 @@ class SignIn extends Component {
 			rPasswordValidation: null,
 		});
 		if (this.state.password.length < 6 || this.state.password.length > 64) {
-			this.setInfoMessage("error", "Password must be between 6 and 64 characters in length.");
+			this.setInfoMessage("Error", "Password must be between 6 and 64 characters in length.");
 			this.setState({
 				rPasswordValidation: "error",
 			});
 			this.rPasswordInput.focus();
 			return;
 		}
-		if (this.state.username.length < 6 || this.state.username.length > 16) {
-			this.setInfoMessage("error", "Username must be between 4 and 16 characters in length.");
+		if (this.state.username.length < 4 || this.state.username.length > 16) {
+			this.setInfoMessage("Error", "Username must be between 4 and 16 characters in length.");
 			this.setState({
 				rUsernameValidation: "error",
 			});
@@ -101,7 +101,7 @@ class SignIn extends Component {
 			return;
 		}
 		if (this.state.password !== this.state.confirmPassword) {
-			this.setInfoMessage("error", "Passwords do not match.");
+			this.setInfoMessage("Error", "Passwords do not match.");
 			this.setState({
 				rPasswordValidation: "error",
 				rConfirmPasswordValidation: "error",
@@ -110,7 +110,7 @@ class SignIn extends Component {
 			return;
 		}
 		if (!this.state.username.match(/^[0-9a-zA-Z]+$/)) {
-			this.setInfoMessage("error", "Username must be alphanumeric.");
+			this.setInfoMessage("Error", "Username must be alphanumeric.");
 			this.rUserInput.focus();
 			return;
 
@@ -124,7 +124,7 @@ class SignIn extends Component {
 		})
 			.then((resp) => {
 				if (resp.ok) {
-					return resp.json();
+					return resp.text();
 				}
 				return resp.text()
 					.then((error) => {
@@ -132,11 +132,15 @@ class SignIn extends Component {
 					});
 			})
 			.then((responseJson) => {
-				console.log(responseJson);
+				if (responseJson === "register-success\n") {
+					this.setInfoMessage("Success", "Account created, you may now sign in.");
+					this.toggleMode();
+				}
+				return;
 			})
 			.catch((error) => {
 				if (error.message === "username-taken\n") {
-					this.setInfoMessage("error", "That username has been taken, please choose another.");
+					this.setInfoMessage("Error", "That username has been taken, please choose another.");
 					this.setState({
 						rUsernameValidation: "error",
 					});

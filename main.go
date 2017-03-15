@@ -19,7 +19,7 @@ import (
 )
 
 var db *sql.DB
-var isAlphaNumeric = regexp.MustCompile(`^[a-zA-Z0-9]{6,16}$`).MatchString
+var isAlphaNumeric = regexp.MustCompile(`^[a-zA-Z0-9]{4,16}$`).MatchString
 
 type tokenInfo struct {
 	token string
@@ -111,7 +111,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	if err := decoder.Decode(&jr); err != nil {
 		panic(err)
 	}
-	if (len(jr.Password) < 8 || len(jr.Password) > 64) || (len(jr.Username) > 16 || len(jr.Username) < 6) || !isAlphaNumeric(jr.Username) {
+	if (len(jr.Password) < 8 || len(jr.Password) > 64) || (len(jr.Username) > 16 || len(jr.Username) < 4) || !isAlphaNumeric(jr.Username) {
 		http.Error(w, "Could not create account", http.StatusBadRequest)
 		return
 	}
@@ -138,6 +138,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Username taken", 400)
 		return
 	}
+	http.Error(w, "register-success", http.StatusOK)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -255,7 +256,8 @@ func main() {
 			return true
 		},
 	}
-	ctxGroup.GET("/api/ws", func(w http.ResponseWriter, r *http.Request) {
+	ctxGroup.GET("/ws", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Printf("Attempted websocket connection\n")
 		var info tokenInfo
 		var ret bool
 		if ret, info = checkToken(r.URL.Query().Get("token")); !ret {
@@ -276,7 +278,7 @@ func main() {
 			return
 		}
 		defer conn.Close()
-		ourUser := &User {
+		ourUser := &User{
 			id: ui.userId,
 			Username: ui.username,
 			conn: conn,

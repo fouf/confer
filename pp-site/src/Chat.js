@@ -11,9 +11,10 @@ class Chat extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			chatRoomTitle: "Join a chat on the left",
+			chatRoomTitle: "Join a chat room on the left",
 			chatRoomID: -1,
 			loggedIn: window.localStorage.getItem('token') !== null,
+			inputDisabled: true,
 		}
 		this.conversationOnClick = this.conversationOnClick.bind(this);
 		this.onInputKeypress = this.onInputKeypress.bind(this);
@@ -25,11 +26,12 @@ class Chat extends Component {
 		this.setState({
 			chatRoomTitle: name,
 			chatRoomID: convoID,
+			inputDisabled: false,
 		});
 	}
 	// Handler for when we enter input into the text entry
 	onInputKeypress(e) {
-		if (e.key === "Enter") {
+		if (e.key === "Enter" && this.textInput.value.length > 0) {
 			var nm = new NetMessage("message", this.textInput.value);
 			this.ws.send(nm.json());
 			this.textInput.value = "";
@@ -37,13 +39,18 @@ class Chat extends Component {
 	}
 	componentDidMount() {
 		var t = window.localStorage.getItem('token');
-		this.ws = new WebSocket("ws://localhost:8080/api/ws?token="+t);
+		if (t === null) {
+			return;
+		}
+		this.ws = new WebSocket("wss://foufy.com/ws?token="+t);
+		//this.ws = new WebSocket("ws://localhost:8080/ws?token="+t);
 		this.ws.addEventListener('open', (e) => {
 		});
 		this.ws.addEventListener('message', (e) => {
 			var obj = JSON.parse(e.data);
 			switch (obj.type) {
 				case "chats":
+					// TODO: Check here for new messages
 					this.setState({
 						convos: obj.chats,
 					});
@@ -64,8 +71,7 @@ class Chat extends Component {
 			}
 		}
 		if (this.state.loggedIn) { // should figure out another way to handle this
-		return (
-			<div id="main-chat">
+			return (
 				<Grid>
 					<Col md={2}>
 						<ConversationList conversations={this.state.convos} handler={this.conversationOnClick} />
@@ -74,16 +80,16 @@ class Chat extends Component {
 						<h3>{this.state.chatRoomTitle}</h3>
 						<hr />
 						<MessageList messages={messages} />
+						<br />
 						<FormGroup>
-							<FormControl inputRef={(input) => { this.textInput = input; }} type="text" label="message" onKeyPress={this.onInputKeypress} />
+							<FormControl inputRef={(input) => { this.textInput = input; }} type="text" label="message" onKeyPress={this.onInputKeypress} disabled={this.state.inputDisabled} />
 						</FormGroup>
 					</Col>
 					<Col md={2}>
 						<UserList users={users} />
 					</Col>
 				</Grid>
-			</div>
-		);
+			);
 		} else {
 			return (
 				<Landing />

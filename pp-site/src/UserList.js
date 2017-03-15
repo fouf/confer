@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ListGroup } from 'react-bootstrap';
 
 import User from './User.js';
 
@@ -15,9 +14,9 @@ class UserList extends Component {
 		return(
 			<div>
 				<h4>Connected Users</h4>
-				<ListGroup>
+				<ul>
 					{users}
-				</ListGroup>
+				</ul>
 			</div>
 		);
 	}

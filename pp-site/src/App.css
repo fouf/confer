@@ -1,27 +1,21 @@
 header {
 	margin-top: 70px;
 }
-.container {
-}
-#main-chat {
-}
-#conversation {
-}
 #messages {
-	height: 320px;
 	overflow-y: scroll;
 	border-radius: 5px;
 	padding: 10px;
-}
-#user {
-	text-align: center;
+	max-height: 65vh;
 }
 .time {
-	font-size: 0.85em;
+	font-size: 0.75em;
 }
 #convos .list-group-item-heading {
 	border-bottom: 1px dashed black;
 }
 .heading {
 	font-weight: bold;
+}
+#msg {
+	display: flex;
 }

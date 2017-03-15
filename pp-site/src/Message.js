@@ -13,11 +13,10 @@ class Message extends Component {
 			justify = "right";
 		}
 		return (
-			<div style={{display: 'flex', justifyContent: side}}>
+			<div id="msg" style={{justifyContent: side}}>
 				<ListGroupItem>
 					<h4 className="list-group-item-heading heading" style={{textAlign: justify}}>{this.props.username}</h4>
 					<div style={{textAlign: justify}}>{this.props.message}</div>
-					<br />
 					<span className={'time'}>{this.props.time}</span>
 				</ListGroupItem>
 			</div>

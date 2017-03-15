@@ -55,6 +55,9 @@ func userLeft(user *User) {
 	for _, v := range Chats {
 		delete(v.Users, strconv.Itoa(user.id))
 	}
+	for _, v := range Users {
+		syncUser(v)
+	}
 }
 
 func joinChat(chatID string, user *User) {

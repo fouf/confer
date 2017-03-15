@@ -4,12 +4,26 @@ import { Modal, Button } from 'react-bootstrap';
 class Register extends Component {
 	constructor(props) {
 		super(props);
-		
+		this.state = {
+			showModal: false,
+		};
+	}
+
+	close() {
+		this.setState({
+			showModal: false,
+		});
+	}
+
+	open() {
+		this.setState({
+			showModal: true,
+		});
 	}
 
 	render() {
 		return (
-			<Modal show={this.props.show} onHide={this.close}>
+			<Modal show={this.props.showModal} onHide={this.close}>
 				<Modal.Header closeButton>
 
 				</Modal.Header>
